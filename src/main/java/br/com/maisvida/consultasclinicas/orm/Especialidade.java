@@ -1,6 +1,6 @@
 package br.com.maisvida.consultasclinicas.orm;
 
-public enum Especialista {
+public enum Especialidade {
 	CLINICOGERAL,
 	PEDIATRA,
 	PSIQUIATRA,

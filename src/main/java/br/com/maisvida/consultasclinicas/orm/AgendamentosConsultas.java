@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "AGENDAMENTOSCONSULTAS")
-public class AgentamentosConsultas {
+public class AgendamentosConsultas {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -21,7 +21,7 @@ public class AgentamentosConsultas {
 	private LocalDate dataNascimento;
 	private LocalDate dataDaConsulta;
 	private LocalTime horaDaConsulta;
-	private Especialista especialista;
+	private String especialista;
 
 	public Long getId() {
 		return id;
@@ -79,11 +79,11 @@ public class AgentamentosConsultas {
 		this.horaDaConsulta = horaDaConsulta;
 	}
 
-	public Especialista getEspecialista() {
+	public String getEspecialista() {
 		return especialista;
 	}
 
-	public void setEspecialista(Especialista especialista) {
+	public void setEspecialista(String especialista) {
 		this.especialista = especialista;
 	}
 

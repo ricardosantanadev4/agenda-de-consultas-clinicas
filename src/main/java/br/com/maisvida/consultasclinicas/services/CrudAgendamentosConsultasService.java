@@ -7,7 +7,8 @@ import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
 
-import br.com.maisvida.consultasclinicas.orm.AgentamentosConsultas;
+import br.com.maisvida.consultasclinicas.orm.AgendamentosConsultas;
+import br.com.maisvida.consultasclinicas.orm.Especialidade;
 import br.com.maisvida.consultasclinicas.repository.ConsultasClinicasRepository;
 
 @Service
@@ -44,6 +45,7 @@ public class CrudAgendamentosConsultasService {
 	}
 
 	private void agendarConsulta(Scanner scanner) {
+		AgendamentosConsultas consulta = new AgendamentosConsultas();
 		System.out.println("Informe seu nome");
 		String nome = scanner.nextLine();
 		System.out.println("Informe seu rg");
@@ -52,9 +54,9 @@ public class CrudAgendamentosConsultasService {
 		String telefone = scanner.nextLine();
 		System.out.println("Informe sua data de nascimento");
 		String dataNascimento = scanner.nextLine();
+		especialistas(scanner, consulta);
 		System.out.println("Informe o horário da consulta");
 		String horaConsulta = scanner.nextLine();
-		AgentamentosConsultas consulta = new AgentamentosConsultas();
 		consulta.setNome(nome);
 		consulta.setRg(rg);
 		consulta.setTelefone(telefone);
@@ -62,5 +64,39 @@ public class CrudAgendamentosConsultasService {
 		consulta.setHoraDaConsulta(LocalTime.parse(horaConsulta, formatHora));
 		consultaRepository.save(consulta);
 
+	}
+
+	public void especialistas(Scanner scanner, AgendamentosConsultas consulta) {
+		System.out.println("Escolha um especialista:");
+		System.out.println("1 - " + Especialidade.CARDIOLOGISTA.toString());
+		System.out.println("2 - " + Especialidade.CLINICOGERAL.toString());
+		System.out.println("3 - " + Especialidade.NEUROLOGISTA.toString());
+		System.out.println("4 - " + Especialidade.PEDIATRA.toString());
+		System.out.println("5 - " + Especialidade.PSIQUIATRA.toString());
+		Integer function = Integer.parseInt(scanner.nextLine());
+		switch (function) {
+		case 1:
+			consulta.setEspecialista(Especialidade.CARDIOLOGISTA.toString());
+			consultaRepository.save(consulta);
+			break;
+		case 2:
+			consulta.setEspecialista(Especialidade.CLINICOGERAL.toString());
+			consultaRepository.save(consulta);
+			break;
+		case 3:
+			consulta.setEspecialista(Especialidade.NEUROLOGISTA.toString());
+			consultaRepository.save(consulta);
+			break;
+		case 4:
+			consulta.setEspecialista(Especialidade.PEDIATRA.toString());
+			consultaRepository.save(consulta);
+			break;
+		case 5:
+			consulta.setEspecialista(Especialidade.PSIQUIATRA.toString());
+			consultaRepository.save(consulta);
+			break;
+		default:
+			break;
+		}
 	}
 }
