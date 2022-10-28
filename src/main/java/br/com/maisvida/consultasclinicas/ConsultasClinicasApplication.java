@@ -14,11 +14,11 @@ import br.com.maisvida.consultasclinicas.services.CrudAgendamentosConsultasServi
 public class ConsultasClinicasApplication implements CommandLineRunner {
 	private Boolean system = true;
 	private final CrudAgendamentosConsultasService crudAgendamentos;
-	
+
 	public ConsultasClinicasApplication(CrudAgendamentosConsultasService crudAgendamentos) {
 		this.crudAgendamentos = crudAgendamentos;
 	}
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(ConsultasClinicasApplication.class, args);
 	}
