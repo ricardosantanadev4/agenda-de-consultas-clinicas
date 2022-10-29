@@ -8,23 +8,21 @@ import org.springframework.stereotype.Service;
 
 import br.com.maisvida.consultasclinicas.orm.AgendamentosConsultas;
 import br.com.maisvida.consultasclinicas.orm.Especialidade;
+import br.com.maisvida.consultasclinicas.repository.ConsultasClinicasRepository;
 
 @Service
 public class CrudAgendamentosConsultasService {
 	private Boolean system = true;
 	private final DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private final DateTimeFormatter formatHora = DateTimeFormatter.ofPattern("HH:mm:ss");
-//	private final ConsultasClinicasRepository consultaRepository;
+	private final ConsultasClinicasRepository consultaRepository;
 	private final CrudEspecialistas crudEspercialistas;
 
-//	public CrudAgendamentosConsultasService(ConsultasClinicasRepository consultaRepository) {
-////		super();
-//		this.consultaRepository = consultaRepository;
-//	}
-
-	public CrudAgendamentosConsultasService(CrudEspecialistas crudEspercialistas) {
-//		super();
+	public CrudAgendamentosConsultasService(ConsultasClinicasRepository consultaRepository,
+			CrudEspecialistas crudEspercialistas) {
+		this.consultaRepository = consultaRepository;
 		this.crudEspercialistas = crudEspercialistas;
+
 	}
 
 	public void begin() {
@@ -62,21 +60,25 @@ public class CrudAgendamentosConsultasService {
 		String telefone = scanner.nextLine();
 		System.out.println("Informe sua data de nascimento");
 		String dataNascimento = scanner.nextLine();
-		especialistas(scanner, consulta);
-		System.out.println("Escolha um especialista");
-		crudEspercialistas.visualizar();
-//		String especialista = scanner.nextLine();
+		String especialidade = especialidade(scanner);
+		crudEspercialistas.detalharEspecialidade(especialidade);
+		System.out.println("Digite o código do especialista para realizar o agendamento");
+		Long codigoEspecialista = Long.parseLong(scanner.nextLine());
+		System.out.println(codigoEspecialista);
 		consulta.setNome(nome);
 		consulta.setRg(rg);
 		consulta.setTelefone(telefone);
 		consulta.setDataNascimento(LocalDate.parse(dataNascimento, formatoData));
-//		consulta.setHoraDaConsulta(LocalTime.parse(horaConsulta, formatHora));
-//		consultaRepository.save(consulta);
+		consulta.setCodigoEspecialista(codigoEspecialista);
+		consultaRepository.save(consulta);
+		System.out.println("################ Consulta marcada! #####################");
+		crudEspercialistas.detalhar(codigoEspecialista);
 
 	}
 
-	public void especialistas(Scanner scanner, AgendamentosConsultas consulta) {
-		System.out.println("Escolha um especialista:");
+	public String especialidade(Scanner scanner) {
+		String especialidade = "";
+		System.out.println("Escolha uma especialidade: ");
 		System.out.println("1 - " + Especialidade.CARDIOLOGISTA.toString());
 		System.out.println("2 - " + Especialidade.CLINICOGERAL.toString());
 		System.out.println("3 - " + Especialidade.NEUROLOGISTA.toString());
@@ -85,27 +87,23 @@ public class CrudAgendamentosConsultasService {
 		Integer function = Integer.parseInt(scanner.nextLine());
 		switch (function) {
 		case 1:
-			consulta.setEspecialista(Especialidade.CARDIOLOGISTA.toString());
-//			consultaRepository.save(consulta);
+			especialidade = Especialidade.CARDIOLOGISTA.toString();
 			break;
 		case 2:
-			consulta.setEspecialista(Especialidade.CLINICOGERAL.toString());
-//			consultaRepository.save(consulta);
+			especialidade = Especialidade.CLINICOGERAL.toString();
 			break;
 		case 3:
-			consulta.setEspecialista(Especialidade.NEUROLOGISTA.toString());
-//			consultaRepository.save(consulta);
+			especialidade = Especialidade.NEUROLOGISTA.toString();
 			break;
 		case 4:
-			consulta.setEspecialista(Especialidade.PEDIATRA.toString());
-//			consultaRepository.save(consulta);
+			especialidade = Especialidade.PEDIATRA.toString();
 			break;
 		case 5:
-			consulta.setEspecialista(Especialidade.PSIQUIATRA.toString());
-//			consultaRepository.save(consulta);
+			especialidade = Especialidade.PSIQUIATRA.toString();
 			break;
 		default:
 			break;
 		}
+		return especialidade;
 	}
 }

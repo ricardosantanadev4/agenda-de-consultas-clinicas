@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import br.com.maisvida.consultasclinicas.orm.Especialistas;
 
-public interface EspecialistasRepository extends CrudRepository<Especialistas, Long>{
-
+public interface EspecialistasRepository extends CrudRepository<Especialistas, Long> {
+	Iterable<Especialistas> findByEspecialidade(String string);
 }

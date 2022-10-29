@@ -28,7 +28,7 @@ public class ConsultasClinicasApplication implements CommandLineRunner {
 		Scanner scanner = new Scanner(System.in);
 		while (system) {
 			System.out.println("0 - Sair");
-			System.out.println("1 - Agendar um consulta");
+			System.out.println("1 - Ir para o menu de agendamento");
 			Integer function = scanner.nextInt();
 			switch (function) {
 			case 1:

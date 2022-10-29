@@ -1,8 +1,8 @@
 package br.com.maisvida.consultasclinicas.orm;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,13 +15,16 @@ public class AgendamentosConsultas {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "NOME")
 	private String nome;
+	@Column(name = "RG")
 	private String rg;
+	@Column(name = "TELEFONE")
 	private String telefone;
+	@Column(name = "DATA_DE_MASCIMENTO")
 	private LocalDate dataNascimento;
-	private LocalDate dataDaConsulta;
-	private LocalTime horaDaConsulta;
-	private String especialista;
+	@Column(name = "CODIGO_ESPECIALISTA")
+	private Long codigoEspecialista;
 
 	public Long getId() {
 		return id;
@@ -63,35 +66,18 @@ public class AgendamentosConsultas {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public LocalDate getDataDaConsulta() {
-		return dataDaConsulta;
+	public Long getCodigoEspecialista() {
+		return codigoEspecialista;
 	}
 
-	public void setDataDaConsulta(LocalDate dataDaConsulta) {
-		this.dataDaConsulta = dataDaConsulta;
-	}
-
-	public LocalTime getHoraDaConsulta() {
-		return horaDaConsulta;
-	}
-
-	public void setHoraDaConsulta(LocalTime horaDaConsulta) {
-		this.horaDaConsulta = horaDaConsulta;
-	}
-
-	public String getEspecialista() {
-		return especialista;
-	}
-
-	public void setEspecialista(String especialista) {
-		this.especialista = especialista;
+	public void setCodigoEspecialista(Long codigoEspecialista) {
+		this.codigoEspecialista = codigoEspecialista;
 	}
 
 	@Override
 	public String toString() {
-		return "AgentamentosConsultas [id=" + id + ", nome=" + nome + ", rg=" + rg + ", telefone=" + telefone
-				+ ", dataNascimento=" + dataNascimento + ", dataDaConsulta=" + dataDaConsulta + ", horaDaConsulta="
-				+ horaDaConsulta + ", especialista=" + especialista + "]";
+		return "AgendamentosConsultas [id=" + id + ", nome=" + nome + ", rg=" + rg + ", telefone=" + telefone
+				+ ", dataNascimento=" + dataNascimento + ", codigoEspecialista=" + codigoEspecialista + "]";
 	}
 
 }
