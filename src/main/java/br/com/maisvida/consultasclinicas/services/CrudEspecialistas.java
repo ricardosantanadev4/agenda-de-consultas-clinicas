@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import br.com.maisvida.consultasclinicas.orm.Especialistas;
+import br.com.maisvida.consultasclinicas.orm.StatusEspecialistas;
 import br.com.maisvida.consultasclinicas.repository.EspecialistasRepository;
 
 @Service
@@ -40,9 +41,31 @@ public class CrudEspecialistas {
 			System.out.println("################ Segue os detalhes do agendamento! #####################");
 			System.out.println("Código: " + opcao.get().getId() + " Nome: " + opcao.get().getNome() + " Especialidade: "
 					+ opcao.get().getEspecialidade() + " Dia da consulta: " + opcao.get().getDiaDaSemana() + " Horário "
-					+ opcao.get().getHorario());
+					+ opcao.get().getHorario() + " Status do agendamento: " + opcao.get().getStatusEspecialistas());
 		} else {
 			System.out.println("Código não encontrado! Verifique o código e retorne novamente");
 		}
+	}
+
+	public void atualizarStatusEspecialista(Long id) {
+		Optional<Especialistas> opcao = especialistaRepository.findById(id);
+		if (opcao.isPresent()) {
+			opcao.get().setStatusEspecialistas(StatusEspecialistas.AGENDADO.toString());
+			especialistaRepository.save(opcao.get());
+		} else {
+			System.out.println("Não foi atualizar o status do agendamento verifique o código e retorne novamente");
+		}
+
+	}
+
+	public void atualizarPacienteEspecialista(Long id, String nomePaciente) {
+		Optional<Especialistas> opcao = especialistaRepository.findById(id);
+		if (opcao.isPresent()) {
+			opcao.get().setPaciente(nomePaciente);
+			especialistaRepository.save(opcao.get());
+		} else {
+			System.out.println("Não foi atualizar o status do agendamento verifique o código e retorne novamente");
+		}
+
 	}
 }

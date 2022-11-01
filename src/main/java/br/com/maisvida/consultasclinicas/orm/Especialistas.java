@@ -26,6 +26,10 @@ public class Especialistas {
 	private LocalTime horario;
 	@Column(name = "DIA_DA_SEMANA")
 	private String diaDaSemana;
+	@Column(name = "STATUS_ESPECIALISTAS")
+	private String statusEspecialistas = StatusEspecialistas.LIVRE.toString();
+	@Column(name = "PACIENTE")
+	private String paciente = "SEM_PACIENTE_CADASTRADO";
 
 	public Long getId() {
 		return id;
@@ -75,10 +79,27 @@ public class Especialistas {
 		this.diaDaSemana = diaDaSemana;
 	}
 
+	public String getStatusEspecialistas() {
+		return statusEspecialistas;
+	}
+
+	public void setStatusEspecialistas(String statusEspecialistas) {
+		this.statusEspecialistas = statusEspecialistas;
+	}
+
+	public String getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(String paciente) {
+		this.paciente = paciente;
+	}
+
 	@Override
 	public String toString() {
 		return "Especialistas [id=" + id + ", nome=" + nome + ", especialidade=" + especialidade + ", data_da_Consulta="
-				+ data_da_Consulta + ", horario=" + horario + ", diaDaSemana=" + diaDaSemana + "]";
+				+ data_da_Consulta + ", horario=" + horario + ", diaDaSemana=" + diaDaSemana + ", statusEspecialistas="
+				+ statusEspecialistas + ", paciente=" + paciente + "]";
 	}
 
 }

@@ -2,13 +2,16 @@ package br.com.maisvida.consultasclinicas.services;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
 
 import br.com.maisvida.consultasclinicas.orm.AgendamentosConsultas;
 import br.com.maisvida.consultasclinicas.orm.Especialidade;
+import br.com.maisvida.consultasclinicas.orm.Especialistas;
 import br.com.maisvida.consultasclinicas.repository.ConsultasClinicasRepository;
+import br.com.maisvida.consultasclinicas.repository.EspecialistasRepository;
 
 @Service
 public class CrudAgendamentosConsultasService {
@@ -17,11 +20,13 @@ public class CrudAgendamentosConsultasService {
 	private final DateTimeFormatter formatHora = DateTimeFormatter.ofPattern("HH:mm:ss");
 	private final ConsultasClinicasRepository consultaRepository;
 	private final CrudEspecialistas crudEspercialistas;
+	private final EspecialistasRepository especialistaRepository;
 
 	public CrudAgendamentosConsultasService(ConsultasClinicasRepository consultaRepository,
-			CrudEspecialistas crudEspercialistas) {
+			CrudEspecialistas crudEspercialistas, EspecialistasRepository especialistaRepository) {
 		this.consultaRepository = consultaRepository;
 		this.crudEspercialistas = crudEspercialistas;
+		this.especialistaRepository = especialistaRepository;
 
 	}
 
@@ -30,17 +35,10 @@ public class CrudAgendamentosConsultasService {
 		while (system) {
 			System.out.println("0 - Sair ...");
 			System.out.println("1 - Agendar uma consulta");
-			System.out.println("2 - Listar especialistas");
-//			System.out.println("2 - Cancelar agendamento");
-//			System.out.println("3 - Consultar agendamento");
-//			System.out.println("4 - Alterar data de agendamento");
 			Integer teste = Integer.parseInt(scanner.nextLine());
 			switch (teste) {
 			case 1:
 				agendarConsulta(scanner);
-				break;
-			case 2:
-				crudEspercialistas.visualizar();
 				break;
 			default:
 				system = false;
@@ -51,7 +49,6 @@ public class CrudAgendamentosConsultasService {
 	}
 
 	private void agendarConsulta(Scanner scanner) {
-		AgendamentosConsultas consulta = new AgendamentosConsultas();
 		System.out.println("Informe seu nome");
 		String nome = scanner.nextLine();
 		System.out.println("Informe seu rg");
@@ -64,14 +61,9 @@ public class CrudAgendamentosConsultasService {
 		crudEspercialistas.detalharEspecialidade(especialidade);
 		System.out.println("Digite o código do especialista para realizar o agendamento");
 		Long codigoEspecialista = Long.parseLong(scanner.nextLine());
-		System.out.println(codigoEspecialista);
-		consulta.setNome(nome);
-		consulta.setRg(rg);
-		consulta.setTelefone(telefone);
-		consulta.setDataNascimento(LocalDate.parse(dataNascimento, formatoData));
-		consulta.setCodigoEspecialista(codigoEspecialista);
-		consultaRepository.save(consulta);
-		System.out.println("################ Consulta marcada! #####################");
+		salvar(codigoEspecialista, nome, rg, telefone, dataNascimento);
+		crudEspercialistas.atualizarStatusEspecialista(codigoEspecialista);
+		crudEspercialistas.atualizarPacienteEspecialista(codigoEspecialista, nome);
 		crudEspercialistas.detalhar(codigoEspecialista);
 
 	}
@@ -105,5 +97,22 @@ public class CrudAgendamentosConsultasService {
 			break;
 		}
 		return especialidade;
+	}
+
+	public void salvar(Long codigoEspecialista, String nome, String rg, String telefone, String dataNascimento) {
+		Optional<Especialistas> opcao = especialistaRepository.findById(codigoEspecialista);
+		if (opcao.isPresent()) {
+			AgendamentosConsultas consulta = new AgendamentosConsultas();
+			consulta.setNome(nome);
+			consulta.setRg(rg);
+			consulta.setTelefone(telefone);
+			consulta.setDataNascimento(LocalDate.parse(dataNascimento, formatoData));
+			consulta.setCodigoEspecialista(codigoEspecialista);
+			consultaRepository.save(consulta);
+			System.out.println("################ Consulta marcada! #####################");
+		} else {
+			System.out.println(
+					"Não foi encontrado especialista com o código informado, verifique o número e retorne novamente");
+		}
 	}
 }
